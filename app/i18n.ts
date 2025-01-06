@@ -1,24 +1,24 @@
-import { createInstance, i18n, Resource } from 'i18next';
-import { initReactI18next } from 'react-i18next/initReactI18next';
-import resourcesToBackend from 'i18next-resources-to-backend';
-import i18nConfig from '@/i18nConfig';
+import { createInstance, i18n, Resource } from 'i18next'
+import { initReactI18next } from 'react-i18next/initReactI18next'
+import resourcesToBackend from 'i18next-resources-to-backend'
+import i18nConfig from '@/i18nConfig'
 
 type InitTranslationsParams = {
-  locale: string;
-  namespaces: string[];
-  i18nInstance?: i18n;
-  resources?: Resource;
-};
+  locale: string
+  namespaces: string[]
+  i18nInstance?: i18n
+  resources?: Resource
+}
 
 export default async function initTranslations({
   locale,
   namespaces,
   i18nInstance,
-  resources,
+  resources
 }: InitTranslationsParams) {
-  i18nInstance = i18nInstance || createInstance();
+  i18nInstance = i18nInstance || createInstance()
 
-  i18nInstance.use(initReactI18next);
+  i18nInstance.use(initReactI18next)
 
   if (!resources) {
     i18nInstance.use(
@@ -26,7 +26,7 @@ export default async function initTranslations({
         (language: string, namespace: string) =>
           import(`@/locales/${language}/${namespace}.json`)
       )
-    );
+    )
   }
 
   await i18nInstance.init({
@@ -37,12 +37,12 @@ export default async function initTranslations({
     defaultNS: namespaces[0],
     fallbackNS: namespaces[0],
     ns: namespaces,
-    preload: resources ? [] : i18nConfig.locales,
-  });
+    preload: resources ? [] : i18nConfig.locales
+  })
 
   return {
     i18n: i18nInstance,
     resources: i18nInstance.services.resourceStore.data,
-    t: i18nInstance.t,
-  };
+    t: i18nInstance.t
+  }
 }
